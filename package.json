@@ -1,0 +1,14 @@
+{
+  "name": "misode-mcfunction",
+  "main": "./lib/misode-mcfunction",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/misode/misode-mcfunction.git"
+  },
+  "description": "Minecraft function language",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  }
+}
