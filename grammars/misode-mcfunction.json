@@ -43,16 +43,12 @@
 			"name": "invalid.illegal.error.fslash"
 		},
 		{
-			"match": " (-?[0-9]+[bsfdi]?)",
+			"match": "( |^)(?:(?:~?-?[0-9]+.?[0-9]*[bsfdi]?)|\\*|~)",
 			"captures": {
 				"1": {
 					"name": "number"
 				}
 			}
-		},
-		{
-			"match": " \\*",
-			"name": "number"
 		}
 	],
 	"repository": {
