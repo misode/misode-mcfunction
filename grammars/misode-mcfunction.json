@@ -17,17 +17,20 @@
       "end": "\\]",
       "patterns":[
         {
-          "match": "(score|type|tag|name|team|x|y|z|dx|dy|dz|rx|ry|rxm|rym|r|rm|c|l|lm|m)[_=]",
+          "match": "(scores|type|tag|name|team|x|y|z|dx|dy|dz|rotaion_x|rotation_y|distance|limit|sort|level|gamemode)[{_=]",
 					"captures": {
 						"1": {
 							"name": "name"
 						}
 					}
-    		}
+    		},
+				{
+					"include": "#nbt-object"
+				}
       ]
 		},
 		{
-			"match": "(?:testfor|whitelist|ban|ban-ip|banlist|deop|kick|list|op|pardon|pardon-ip|save-all|save-off|save-on|setidletimeout|stop|whitelist|achievement|blockdata|clear|clone|debug|defaultgamemode|difficulty|effect|enchant|execute|gamemode|gamerule|give|kill|locate|playsound|publish|say|players|objectives|scoreboard|teams|seed|setblock|setworldspawn|spawnpoint|spreadplayers|summon|tellraw|time|set|add|toggledownfall|tp|weather|xp|replaceitem|stats|particle|tag|detect|entitydata|teleport|testforblock|testofrblocks|entity|operation|remove|title|actionbar|subtitle|advancement|function|fill|master|grant|revoke|everything|from|until|only|through|join|leave|dummy|option|color|if|unless|keep|replace|destroy)\\b",
+			"match": "(?:testfor|whitelist|ban|ban-ip|banlist|deop|kick|list|op|pardon|pardon-ip|save-all|save-off|save-on|setidletimeout|stop|whitelist|achievement|data|clear|clone|debug|defaultgamemode|difficulty|effect|enchant|execute|gamemode|gamerule|give|kill|locate|playsound|publish|say|players|objectives|scoreboard|team|seed|setblock|setworldspawn|spawnpoint|spreadplayers|summon|tellraw|time|set|add|toggledownfall|tp|weather|xp|replaceitem|stats|particle|tag|detect|teleport|testforblock|entity|operation|remove|title|actionbar|subtitle|advancement|function|fill|master|grant|revoke|everything|from|until|only|through|join|leave|dummy|option|color|if|unless|keep|replace|destroy|as|at|from|in|anchored|positioned|score|rotated|facing|align|store|run|merge|get|survival|creative|adventure|spectator|block|entity|)",
 			"name": "command"
 		},
 		{
