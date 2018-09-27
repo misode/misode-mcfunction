@@ -1,126 +1,181 @@
-
 {
 	"scopeName": "source.mcfunction",
 	"name": "mcfunction",
 	"fileTypes": ["mcfunction"],
 	"patterns": [
 		{
-			"include": "#nbt-object"
+			"name": "argument",
+			"begin": "(@[parse])\\[",
+			"beginCaptures": {
+				"1": {
+					"name": "selector"
+				}
+			},
+			"end": "\\]",
+			"patterns": [
+				{
+					"match": "([\\w_]+)(?==)",
+					"captures": {
+						"1": {
+							"name": "name"
+						}
+					}
+				},
+				{
+					"begin": "(?<==)",
+					"end": "(?=,|\\])",
+					"name": "value",
+					"patterns": [
+						{
+							"begin": "\"",
+							"end": "\"",
+							"patterns": [
+								{
+									"match": "\\\\(?:[\"\\\\/bfnrt])|(?:u[0-9a-fA-F]{4})"
+								}
+							]
+						},
+						{
+							"match": "[\\w_]"
+						},
+						{
+							"include": "#nbt-compound"
+						}
+					]
+				}
+			]
 		},
 		{
 			"match": "@[parse]",
 			"name": "selector"
 		},
 		{
-			"name": "argument",
-      "begin": "\\[",
-      "end": "\\]",
-      "patterns":[
-        {
-          "match": "(scores|type|tag|name|team|x|y|z|dx|dy|dz|rotation_x|rotation_y|distance|limit|level|gamemode)[{_=]",
-					"captures": {
-						"1": {
-							"name": "name"
-						}
-					}
-    		},
-				{
-					"include": "#nbt-object"
-				}
-      ]
+			"include": "#nbt-compound"
 		},
 		{
-			"match": "(?:testfor|whitelist|ban|ban-ip|banlist|deop|kick|list|op|pardon|pardon-ip|save-all|save-off|save-on|setidletimeout|stop|whitelist|achievement|data|clear|clone|debug|defaultgamemode|difficulty|effect|enchant|execute|gamemode|gamerule|give|kill|locate|playsound|publish|say|players|objectives|scoreboard|team|seed|setblock|setworldspawn|spawnpoint|spreadplayers|summon|tellraw|time|set|add|toggledownfall|tp|weather|xp|replaceitem|stats|particle|tag|detect|entitydata|teleport|testforblock|entity|operation|remove|title|actionbar|subtitle|advancement|function|fill|master|grant|revoke|everything|from|until|only|through|join|leave|dummy|option|color|if|unless|keep|replace|destroy|as|at|from|in|anchored|positioned|score|rotated|facing|align|store|run|merge|get|survival|creative|adventure|spectator|block|entity|) ",
+			"match": "(?:^|(?<=run ))(?:advancement|clear|clone|data|defaultgamemode|difficulty|effect|execute|experience|fill|function|gamemode|gamerule|give|kill|locate|msg|particle|playsound|recipe|reload|replaceitem|say|scoreboard|tag|team|seed|setblock|setworldspawn|spreadplayers|stopsound|summon|teleport|tellraw|tell|time|title|tp|trigger|w|weather|worldborder|xp)\\b",
 			"name": "command"
+		},
+		{
+			"match": "\\b(players|objectives|scoreboard|set|add|reset|entity|operation|remove|title|actionbar|subtitle|master|grant|revoke|everything|from|until|only|through|join|leave|dummy|option|color|if|unless|keep|replace|destroy|as|at|from|in|anchored|positioned|score|rotated|facing|align|store|run|merge|get|survival|creative|adventure|spectator|block|entity)\\b",
+			"name": "subcommand"
 		},
 		{
 			"match": "^#.*",
 			"name": "comment"
 		},
 		{
-			"match": "^/",
-			"name": "invalid.illegal.error.fslash"
-		},
-		{
-			"match": "[~\\^]?-?[0-9\\.]+[bsfdi]?",
-			"name": "number"
+			"match": "[ :=]([~\\^]?-?[0-9\\.]+[bsfdi]?)",
+			"name": "number-area",
+			"captures": {
+				"1": {
+					"name": "number"
+				}
+			}
 		},
 		{
 			"match": "[~\\^\\*]",
 			"name": "number"
+		},
+		{
+			"match": "^/",
+			"name": "error.fslash"
+		},
+		{
+			"match": "\\[(?:(?:(\\w+)=(\\w+)),)*(?:(\\w+)=(\\w+))\\]",
+			"name": "state",
+			"captures": {
+				"1": {
+					"name": "name"
+				},
+				"3": {
+					"name": "name"
+				},
+				"2": {
+					"name": "value"
+				},
+				"4": {
+					"name": "value"
+				}
+			}
 		}
 	],
 	"repository": {
-		"nbt-object": {
-			"match": "{([^{}]*(?:{(.*)?})*[^{}]*)}",
-			"name": "nbt-object",
-			"captures": {
-				"1": {
+		"nbt-array": {
+			"begin": "\\[",
+			"end": "\\]",
+			"name": "array",
+			"patterns": [
+				{
+					"include": "#nbt-value"
+				}
+			]
+		},
+		"nbt-compound": {
+			"begin": "{",
+			"end": "}",
+			"name": "compound.nbt",
+			"patterns": [
+				{
+					"include": "#nbt-key-quoted"
+				},
+				{
+					"include": "#nbt-key-unquoted"
+				},
+				{
+					"begin": ":[\\t_]*",
+					"end": "(?=[\\t ]*}|,)",
 					"patterns": [
-						{
-							"match":"(DataVersion|id|Pos|Motion|Rotation|FallDistance|Fire|Air|OnGround|NoGravity|Dimension|Invulnerable|PortalCooldown|UUIDMost|UUIDLeast|CustomName|CustomNameVisible|Silent|Passengers|Glowing|Tags|CommandStats|SuccesCountObjective|SuccesCountName|AffectedBlocksObjective|AffectedBlocksName|AffectedEntitiesObjective|AffectedEntitiesName|AffectedItemsObjective|AffectedItemsName|QueryResultObjective|QueryResultName|Health|AbsorptionAmount|HurtTime|HurtByTimestamp|DeathTime|FallFlying|Attributes|Name|Base|Modifiers|Amount|Operation|ActiveEffects|Id|Amplifier|Duration|Ambient|ShowParticles|HandItems|Count|Slot|Damage|tag|ArmorItems|HandDropChances|ArmorDropChances|DeathLootTable|DeathLootTableSeed|CanPickUpLoot|NoAI|PersistenceRequired|LeftHanded|Team|Leashed|Leash|X|Y|Z|BatFlags|IsChickenJockey|EggLayTime|InLove|Age|ForcedAge|LoveCauseLeast|LoveCauseMost|powered|ExplosionRadius|Fuse|ignited|Bred|EatingHaystack|Tame|Temper|OwnerUUID|ArmorItem|SaddleItem|ChestHorse|Items|DragonPhase|carried|carriedData|LifeTime|PlayerSpawned|SpellTicks|ExplosionPower|Variant|isBaby|CanBreakDoors|Strength|DecorItem|Size|wasOnGround|CatType|Saddle|RabbitType|MoreCarrotTicks|Sheared|Color|Peek|AttachFace|APX|APY|APZ|SkeletonTrap|SkeletonTrapTime|Pumpkin|BoundX|BoundY|BoundZ|LifeTicks|Profession|Riches|Career|CareerLevel|Willing|Inventory|Offers|Recipes|rewardExp|maxUses|uses|buy|buyB|sell|playerCreated|Johnny|Invul|Angry|CollarColor|Anger|HurtBy|ConversionTime|shake|inData|pickup|player|life|damage|inGround|crit|CustomPotionEffects|Potion|CustomPotionColor|direction|power|ownerName|PickupDelay|Owner|Thrower|Value|Type|LootTable|LootTableSeed|Command|SuccesCount|LastOutput|TrackOutput|PushX|PushZ|Fuel|TransferCooldown|Enabled|SpawnPotentials|Weight|Properties|EntityId|SpawnData|SpawnCount|SpawnRange|Delay|MinSpawnDelay|MaxSpawnDelay|MaxNearbyEntities|RequiredPlayerRange|TNTFuse|Block|TileEntityData|Data|Time|DropItem|HurtEntities|FallHurtMax|FallHurtAmount|ReapplicationDelay|WaitTime|OwnerUUIDMost|OwnerUUIDLeast|DurationOnUse|RadiusPerTick|Particle|ParticleParam1|ParticleParam2|Effects|DisabledSlots|Marker|Invisible|NoBasePlate|Pose|Body|LeftArm|RightArm|LeftLeg|RightLeg|Head|ShowArms|Small|ShowBottom|BeamTarget|Warmup|Life|FireworksItem|Explosion|Flicker|Trail|Type|Colors|FadeColors|Fireworks|Flight|TileX|TileY|TileZ|Facing|ItemDropChance|ItemRotation|Motive|L|M|Steps|Target|TXD|TYD|TZD|x|y|z|Patterns|Pattern|Lock|Levels|Primary|Secondary|color|CustomColor|PotionId|SplashPotion|isMovable|BrewTime|OutputSignal|powered|auto|conditionMet|UpdateLastExecution|LastExecution|ExactTeleport|ExitPortal|Item|BurnTime|CookTime|CookTimeTotal|Record|RecordItem|note|powered|blockId|blockData|facing|progress|extending|source|Text1|Text2|Text3|Text4|SkullType|Rot|textures|Signature|name|author|metadata|posX|posY|posZ|sizeX|sizeY|sizeZ|rotation|mirror|mode|ignoreEntities|ench|display|AttributeModifiers|Unbreakable|SkullOwner|HideFlags|CanDestroy|generation|lvl|Lore|CanPlaceOn|BlockEntityTag|showair|showboundingbox|SelectedItem):",
-							"captures": {
-								"1": {
-									"name": "nbt-key"
-								}
-							}
-						},
 						{
 							"include": "#nbt-value"
 						}
 					]
 				}
-			}
+			]
+		},
+		"nbt-key-quoted": {
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"match": "\\\\(?:[\"\\\\/bfnrt])|(?:u[0-9a-fA-F]{4})"
+				}
+			],
+			"name": "key.nbt"
+		},
+		"nbt-key-unquoted": {
+			"match": "[\\w_]+",
+			"name": "key"
 		},
 		"nbt-value": {
 			"patterns": [
 				{
-					"include": "#nbt-object"
-				},
-				{
-					"include": "#nbt-array"
+					"include": "#nbt-string"
 				},
 				{
 					"include": "#nbt-number"
 				},
 				{
-					"include": "#nbt-string"
+					"include": "#nbt-compound"
+				},
+				{
+					"include": "#nbt-array"
 				}
 			]
 		},
-		"nbt-array": {
-			"match": "\\[([^\\[\\]]*(\\[(.*)?\\])*[^\\[\\]]*)\\]",
-			"name": "nbt-array",
-			"captures": {
-				"1": {
-					"patterns": [
-						{
-							"include": "#nbt-object"
-						},
-						{
-							"include": "#nbt-array"
-						},
-						{
-							"include": "#nbt-number"
-						},
-						{
-							"include": "#nbt-string"
-						}
-					]
-				}
-			}
-		},
 		"nbt-string": {
-			"name": "nbt-string",
-			"match": "\"(?:[^\"\\\\]|\\\\.)*\""
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"match": "\\\\(?:[\"\\\\/bfnrt])|(?:u[0-9a-fA-F]{4})"
+				}
+			],
+			"name": "value.string.nbt"
 		},
 		"nbt-number": {
-			"match": "(-?[0-9]+[bsfdi]?)",
-			"captures": {
-				"1": {
-					"name": "nbt-number"
-				}
-			}
+			"match": "-?\\d+(?:\\.\\d+)?[bfdl]?",
+			"name": "value.number.nbt"
 		}
 	}
 }
