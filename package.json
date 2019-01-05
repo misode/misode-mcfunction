@@ -1,14 +1,41 @@
 {
-  "name": "misode-mcfunction",
-  "main": "./lib/misode-mcfunction",
-  "version": "0.3.4",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/misode/misode-mcfunction.git"
+  "_from": "https://www.atom.io/api/packages/misode-mcfunction/versions/0.3.4/tarball",
+  "_id": "misode-mcfunction@0.3.4",
+  "_inBundle": false,
+  "_integrity": "sha512-2OS2Mjt0Bohg0LsMnrKN/dmo4oudcXkxfETxtWq6nmrIfTqpym1qw+McKHuzCWOaIfYEmAcEYohkVRQinEvkDA==",
+  "_location": "/misode-mcfunction",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "remote",
+    "raw": "https://www.atom.io/api/packages/misode-mcfunction/versions/0.3.4/tarball",
+    "rawSpec": "https://www.atom.io/api/packages/misode-mcfunction/versions/0.3.4/tarball",
+    "saveSpec": "https://www.atom.io/api/packages/misode-mcfunction/versions/0.3.4/tarball",
+    "fetchSpec": "https://www.atom.io/api/packages/misode-mcfunction/versions/0.3.4/tarball"
   },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://www.atom.io/api/packages/misode-mcfunction/versions/0.3.4/tarball",
+  "_shasum": "d9b8292964dc1dca5b80689cc763257da0578f0c",
+  "_spec": "https://www.atom.io/api/packages/misode-mcfunction/versions/0.3.4/tarball",
+  "_where": "C:\\Users\\misoloo\\AppData\\Local\\Temp\\_00CE~1\\apm-install-dir-118828-2420-24hn11.vv27w",
+  "bugs": {
+    "url": "https://github.com/misode/misode-mcfunction/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
   "description": "Minecraft function language",
-  "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
-  }
+  },
+  "homepage": "https://github.com/misode/misode-mcfunction#readme",
+  "license": "MIT",
+  "main": "./lib/misode-mcfunction",
+  "name": "mcfunction-plus",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/misode/misode-mcfunction.git"
+  },
+  "version": "0.3.4"
 }
