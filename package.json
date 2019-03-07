@@ -32,7 +32,7 @@
   "homepage": "https://github.com/misode/misode-mcfunction#readme",
   "license": "MIT",
   "main": "./lib/misode-mcfunction",
-  "name": "mcfunction-plus",
+  "name": "misode-mcfunction",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/misode/misode-mcfunction.git"
